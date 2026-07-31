@@ -1,0 +1,11 @@
+<h1>{{ title() }}</h1>
+
+<ul>
+    @for (task of tasks(); track task) {
+        <li>{{ task }}</li>
+    }
+</ul>
+
+<p>
+    Total de tareas: {{ totalTasks() }}
+</p>

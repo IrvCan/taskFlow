@@ -1,5 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { providePrimeNG } from 'primeng/config';
 import { provideRouter } from '@angular/router';
+import Aura from '@primeng/themes/aura';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -7,6 +9,12 @@ import { provideClientHydration } from '@angular/platform-browser';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes), provideClientHydration()
+    provideRouter(routes), provideClientHydration(),
+    providePrimeNG({
+      license: 'eyJpZCI6IjY5Y2FhNWVjLWJhMTItNGM1OS04OTlkLTBiNmM2NmI5YjIzNyIsInByb2R1Y3QiOiJwcmltZXVpIiwidGllciI6ImNvbW11bml0eSIsInR5cGUiOiJkZXYiLCJpYXQiOjE3ODU0NTMyMzQsImV4cCI6MTgxNjk4OTIzNH0.VVAZf2EAf4qahwpwSnDutkrKiwv9OI5BYvNafvGJTZBkRcERo0YPipNCyMkeTovr9TiMPBR1QCyzYJmYzg8SDQ',
+      theme: {
+        preset: Aura
+      }
+    })
   ]
 };
