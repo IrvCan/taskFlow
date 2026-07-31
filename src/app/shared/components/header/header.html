@@ -1,6 +1,38 @@
-<h1>{{ title() }}</h1>
+<header class="header-container">
 
-<button pButton (click)="changeTitle()">
-    <i class="pi pi-plus"></i>
-    Crear tarea
-</button>
+    <div class="logo-container">
+        <h1>{{ title() }}</h1>
+    </div>
+
+    <nav class="navigation">
+
+        <a
+            routerLink="/"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{
+                exact: true
+            }">
+
+            Inicio
+
+        </a>
+
+        <a
+            routerLink="/tasks"
+            routerLinkActive="active">
+
+            Tareas
+
+        </a>
+
+        <button
+            pButton
+            (click)="navigateToTasks()">
+
+            Ir a tareas
+
+        </button>
+
+    </nav>
+
+</header>
