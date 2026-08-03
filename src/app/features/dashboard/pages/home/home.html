@@ -1,12 +1,17 @@
-<section>
+<app-task-form
+    (createTask)="addTask($event)">
+</app-task-form>
 
-    <h2>Mis tareas</h2>
+<app-card>
+
+    <h2 #cardTitle>Mis tareas</h2>
 
     <p>Total: {{ totalTasks() }}</p>
 
     <p>Completadas: {{ completedTasks() }}</p>
 
     <p>Pendientes: {{ pendingTasks() }}</p>
+
 
     <ul>
 
@@ -28,4 +33,4 @@
 
     </ul>
 
-</section>
+</app-card>

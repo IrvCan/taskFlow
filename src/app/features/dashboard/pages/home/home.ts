@@ -1,76 +1,39 @@
-import { Component, computed, effect, signal } from '@angular/core';
-import { Task } from '../../../../shared/models/task.model';
+import { Component, inject } from '@angular/core';
+import { TaskFormComponent } from '../../../tasks/components/task-form/task-form';
+import { TaskStore } from '../../../../core/store/task.store';
+import { CardComponent } from '../../../../shared/components/card/card';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [TaskFormComponent, CardComponent],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
 export class HomeComponent  {
-  
-  protected title = signal('TaskFlow');
-  
-  protected tasks = signal<Task[]>([
-    {
-      id: 1,
-      title: 'Estudiar Angular 22',
-      completed: true
-    },
-    {
-      id: 2,
-      title: 'Aprender PrimeNG',
-      completed: false
-    }
-  ]);
 
-  protected totalTasks = computed(() => {
-    return this.tasks().length;
-  });
+  private readonly taskStore = inject(TaskStore);
 
-  protected pendingTasks = computed(() => {
-    return this.tasks().filter(task => !task.completed).length;
-  });
+  protected readonly tasks = this.taskStore.tasks;
 
-  protected completedTasks = computed(() => {
-    return this.tasks().filter(task => task.completed).length;
-  });
+  protected readonly totalTasks = this.taskStore.totalTasks;
 
-  constructor() {
-    
-    effect(()=>{
-      console.log(`Número de tareas: ${this.totalTasks()}`);
-    });
-    
-    effect(() => {
+  protected readonly pendingTasks = this.taskStore.pendingTasks;
 
-        console.log('Pendientes:', this.pendingTasks());
+  protected readonly completedTasks = this.taskStore.completedTasks;
 
-    });
-  }
+  constructor() {}
 
   protected toggleTask(id: number): void {
     
-    this.tasks.update(tasks => {
+    this.taskStore.toggleTask(id);
   
-        return tasks.map(task => {
-  
-            if (task.id === id) {
-  
-                return {
-                    ...task,
-                    completed: !task.completed
-                };
-  
-            }
-  
-            return task;
-  
-        });
-  
-    });
-  
+  }
+
+  protected addTask(title: string): void {
+
+    this.taskStore.addTask(title);
+
   }
   
 }

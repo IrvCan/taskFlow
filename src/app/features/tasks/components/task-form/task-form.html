@@ -1,0 +1,21 @@
+<div class="task-form">
+
+    <label for="title">
+        Título
+    </label>
+
+    <input
+        #taskInput
+        id="title"
+        pInputText
+        [value]="title()"
+        (input)="title.set($event.target.value)"
+    />
+
+    <button pButton (click)="addTask()">
+
+        Agregar tarea
+
+    </button>
+
+</div>
