@@ -1,20 +1,20 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout';
-import { HomeComponent } from './features/dashboard/pages/home/home';
-import { TaskListComponent } from './features/tasks/pages/task-list/task-list';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
      {
         path: '',
         component: MainLayoutComponent,
+        canActivate: [authGuard],
         children: [
             {
                 path: '',
-                component: HomeComponent
+                loadChildren: () => import('./features/dashboard/dashboard.routes').then(route => route.dashboardRoutes)
             },
             {
                 path: 'tasks',
-                component: TaskListComponent
+                loadChildren: () => import('./features/tasks/task.routes').then(route => route.taskRoutes)
             }
         ]
     }
