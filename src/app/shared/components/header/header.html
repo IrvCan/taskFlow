@@ -1,38 +1,7 @@
-<header class="header-container">
+<header>
 
-    <div class="logo-container">
-        <h1>{{ title() }}</h1>
-    </div>
+    <h1>{{ title() }}</h1>
 
-    <nav class="navigation">
-
-        <a
-            routerLink="/"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{
-                exact: true
-            }">
-
-            Inicio
-
-        </a>
-
-        <a
-            routerLink="/tasks"
-            routerLinkActive="active">
-
-            Tareas
-
-        </a>
-
-        <button
-            pButton
-            (click)="navigateToTasks()">
-
-            Ir a tareas
-
-        </button>
-
-    </nav>
+    <app-navbar />
 
 </header>
