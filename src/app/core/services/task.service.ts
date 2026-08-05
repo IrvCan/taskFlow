@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-
+import { Injectable, inject } from '@angular/core';
+import { StorageService } from './storage.service';
+import { STORAGE_KEYS } from '../constants/storage.constants';
 import { Task } from '../../shared/models/task.model';
 
 @Injectable({
@@ -7,28 +8,16 @@ import { Task } from '../../shared/models/task.model';
 })
 export class TaskService {
 
+    private readonly storageService = inject(StorageService);
+
+
     getTasks(): Promise<Task[]> {
 
-        return new Promise(resolve => {
+        const tasks = this.storageService.getItem<Task[]>(
+            STORAGE_KEYS.TASKS
+        );
 
-            setTimeout(() => {
-
-                resolve([
-                    {
-                        id: 1,
-                        title: 'Estudiar Angular 22',
-                        completed: false
-                    },
-                    {
-                        id: 2,
-                        title: 'Aprender PrimeNG',
-                        completed: true
-                    }
-                ]);
-
-            }, 2000);
-
-        });
+        return Promise.resolve(tasks ?? []);
 
     }
 

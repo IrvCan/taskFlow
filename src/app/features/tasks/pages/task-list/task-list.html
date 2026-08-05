@@ -1,5 +1,23 @@
-<h2>Lista de tareas</h2>
+<app-task-filter />
 
-<p>
-    Próximamente construiremos este módulo.
-</p>
+<app-task-card>
+
+    <h2>Mis tareas</h2>
+
+    @for (
+        task of store.tasks();
+        track task.id
+    ) {
+
+        <app-task-item
+            [task]="task"
+            (toggle)="store.toggleTask($event)"
+        />
+
+    }
+
+</app-task-card>
+
+<app-task-form
+    (createTask)="store.addTask($event)"
+/>

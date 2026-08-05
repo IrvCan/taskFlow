@@ -1,0 +1,19 @@
+<div class="task-item">
+
+    <p-checkbox
+        [binary]="true"
+        [ngModel]="task().completed"
+        (ngModelChange)="toggle.emit(task().id)"
+    />
+
+    <span>
+
+        {{ task().title }}
+
+    </span>
+
+    <app-task-status
+        [completed]="task().completed"
+    />
+
+</div>

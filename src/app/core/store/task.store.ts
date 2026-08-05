@@ -1,61 +1,89 @@
-import { Injectable, computed, inject, linkedSignal, resource } from '@angular/core';
+import { Injectable, inject, computed, signal } from '@angular/core';
+import { StorageService } from '../services/storage.service';
 import { TaskService } from '../services/task.service';
+import { Task } from '../../shared/models/task.model';
+import { STORAGE_KEYS } from '../constants/storage.constants';
 
 @Injectable({
     providedIn: 'root'
 })
-
 export class TaskStore {
 
     private readonly taskService = inject(TaskService);
-    
-    readonly tasksResource = resource({
-        loader: async () => {
-            return this.taskService.getTasks();
-        }
-    });
+    private readonly storageService = inject(StorageService);
 
-    readonly tasks = linkedSignal(() => {
-        return this.tasksResource.value() ?? [];
-    });
-
-    readonly totalTasks = computed(() => {
-        return this.tasks().length;
-    });
+    readonly tasks = signal<Task[]>([]);
 
     readonly completedTasks = computed(() => {
-        return this.tasks().filter(task => task.completed).length;
+
+        return this.tasks().filter(task => task.completed);
+
     });
 
     readonly pendingTasks = computed(() => {
-        return this.tasks().filter(task => !task.completed).length;
+
+        return this.tasks().filter(task => !task.completed);
+
     });
+
+    async loadTasks(): Promise<void> {
+
+        const tasks =  await this.taskService.getTasks();
+
+        this.tasks.set(tasks);
+
+    }
 
     addTask(title: string): void {
 
-        const newTask = {
+        const task: Task = {
             id: Date.now(),
             title,
-            completed: false
+            completed: false,
+            priority: 'medium'
         };
 
-        this.tasks.update(tasks => [
-            ...tasks,
-            newTask
-        ]);
+        this.tasks.update(tasks => {
+            const updatedTasks = [
+                ...tasks,
+                task
+            ];
+
+            this.storageService.setItem(
+                STORAGE_KEYS.TASKS,
+                updatedTasks
+            );
+
+            return updatedTasks;
+        });
     }
 
     toggleTask(id: number): void {
 
-        this.tasks.update(tasks =>
-            tasks.map(task => ({
-                ...task,
-                completed:
-                    task.id === id
-                        ? !task.completed
-                        : task.completed
-            }))
-        );
+        this.tasks.update(tasks => {
+
+           const updatedTasks = tasks.map(task => {
+
+                if (task.id !== id) {
+                    return task;
+                }
+
+                return {
+                    ...task,
+                    completed: !task.completed
+                };
+
+            });
+
+            this.storageService.setItem(
+                STORAGE_KEYS.TASKS,
+                updatedTasks
+            );
+
+            return updatedTasks;
+
+        });
 
     }
+
 }
