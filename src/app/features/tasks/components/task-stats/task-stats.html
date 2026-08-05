@@ -1,0 +1,27 @@
+<p-card class="task-stats-card">
+  <ng-template pTemplate="title">
+    Estadísticas de tareas
+  </ng-template>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="label">Total</div>
+      <div class="value">{{ totalTasks() }}</div>
+    </div>
+
+    <div class="stat">
+      <div class="label">Completadas</div>
+      <div class="value">{{ completedTasks() }}</div>
+    </div>
+
+    <div class="stat">
+      <div class="label">Pendientes</div>
+      <div class="value">{{ pendingTasks() }}</div>
+    </div>
+  </div>
+
+  <div class="progress-area">
+    <div class="progress-label">Tasa de completado: {{ completionRate() }}%</div>
+    <p-progressBar [value]="completionRate()"></p-progressBar>
+  </div>
+</p-card>
